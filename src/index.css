@@ -2,28 +2,29 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
- body {
-        font-family: 'Nunito Sans', sans-serif;
-      }
-      /* Custom shadow for cards and elements */
-      .custom-shadow {
-        box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.03);
-      }
-      .dark .custom-shadow {
-        box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.1);
-      }
-
-      :root {
-  --dark-blue: hsl(209 23% 22%);
-  --very-dark-blue-bg: hsl(207 26% 17%);
-  --dark-gray: hsl(0 0% 52%);
-  --very-light-gray-bg: hsl(0 0% 98%);
+@theme {
+  --color-dark-blue: hsl(209 23% 22%);
+  --color-very-dark-blue-bg: hsl(207 26% 17%);
+  --color-dark-gray: hsl(0 0% 52%);
+  --color-very-light-gray-bg: hsl(0 0% 98%);
 }
 
-.bg-dark-blue {
-  background-color: var(--dark-blue);
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: var(--color-very-light-gray-bg);
+  color: var(--color-very-dark-blue-bg);
 }
 
-.bg-very-dark-blue-bg {
-  background-color: var(--very-dark-blue-bg);
+.dark body {
+  background-color: var(--color-very-dark-blue-bg);
+  color: white;
+}
+
+/* Custom shadow for cards and elements */
+.custom-shadow {
+  box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.03);
+}
+
+.dark .custom-shadow {
+  box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.1);
 }
