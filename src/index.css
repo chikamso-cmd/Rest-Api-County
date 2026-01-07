@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+ body {
+        font-family: 'Nunito Sans', sans-serif;
+      }
+      /* Custom shadow for cards and elements */
+      .custom-shadow {
+        box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.03);
+      }
+      .dark .custom-shadow {
+        box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.1);
+      }
