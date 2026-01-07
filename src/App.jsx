@@ -5,21 +5,17 @@ import HomePage from "./pages/HomePage";
 import DetailPage from "./pages/DetailsPage";
 
 const App = () => {
-  const [darkMode, setDarkMode] =
-    useState 
-    (() => {
-      const saved = localStorage.getItem("theme");
-      return saved === "dark";
-    });
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    return saved === "dark";
+  });
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+  if (darkMode) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   }, [darkMode]);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
@@ -27,7 +23,7 @@ const App = () => {
   return (
     <div className="min-h-screen">
       <header className="bg-white dark:bg-dark-blue custom-shadow sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-6 flex justify-between items-center bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-6 flex justify-between items-center">
           <Link
             to="/"
             className="text-sm sm:text-2xl font-extrabold tracking-tight"
