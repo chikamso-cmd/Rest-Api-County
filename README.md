@@ -2,6 +2,9 @@
 
 This is a solution to the [REST Countries API with color theme switcher challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/rest-countries-api-with-color-theme-switcher-5cacc469fec04111f7b85fed). This web application allows users to browse through countries, view details about them, and toggle between light and dark modes.
 
+- **Live Site**: [https://rest-county-api.netlify.app/](https://rest-county-api.netlify.app/)
+- **GitHub Repository**: [https://github.com/chikamso-cmd/Rest-Api-County](https://github.com/chikamso-cmd/Rest-Api-County)
+
 ## 📸 Screenshots
 
 *(You can add screenshots of your application here. For example:)*
