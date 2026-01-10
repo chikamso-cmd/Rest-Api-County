@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-// import { Country } from '../types';
+import CountryMap from '../components/CountryMap';
 
 const DetailPage = () => {
   const { code } = useParams();
@@ -11,6 +11,8 @@ const DetailPage = () => {
   const [borderCountries, setBorderCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [history, setHistory] = useState(null);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   useEffect(() => {
     const fetchCountryDetail = async () => {
@@ -18,16 +20,17 @@ const DetailPage = () => {
       try {
         setLoading(true);
         // Fetch detailed country info
+        // We need fields: latlng, name, population, region, subregion, capital, tld, currencies, languages, borders, flags, cca3
         const response = await fetch(`https://restcountries.com/v3.1/alpha/${code}`);
         if (!response.ok) throw new Error('Country not found');
         const data = await response.json();
         const mainCountry = data[0];
         setCountry(mainCountry);
 
-        // Fetch border full names if they exist
+        // Fetch border full names and latlng if they exist
         if (mainCountry.borders && mainCountry.borders.length > 0) {
           const bordersResponse = await fetch(
-            `https://restcountries.com/v3.1/alpha?codes=${mainCountry.borders.join(',')}`
+            `https://restcountries.com/v3.1/alpha?codes=${mainCountry.borders.join(',')}&fields=name,cca3,latlng`
           );
           if (bordersResponse.ok) {
             const bordersData = await bordersResponse.json();
@@ -35,11 +38,29 @@ const DetailPage = () => {
               bordersData.map((c) => ({
                 name: c.name.common,
                 cca3: c.cca3,
+                latlng: c.latlng,
               }))
             );
           }
         } else {
           setBorderCountries([]);
+        }
+
+        // Fetch Wikipedia Summary for History
+        try {
+          setHistoryLoading(true);
+          const wikiResponse = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(mainCountry.name.common)}`);
+          if (wikiResponse.ok) {
+            const wikiData = await wikiResponse.json();
+            setHistory(wikiData.extract);
+          } else {
+            setHistory("History information not available for this country.");
+          }
+        } catch (wikiErr) {
+          console.error("Wiki fetch error:", wikiErr);
+          setHistory("Failed to load history.");
+        } finally {
+          setHistoryLoading(false);
         }
       } catch (err) {
         setError('Error loading country details.');
@@ -75,14 +96,14 @@ const DetailPage = () => {
     );
   }
 
-  // Fix: Property 'common' does not exist on type 'unknown' by casting the result of Object.values
   const nativeName = country.name.nativeName 
     ? (Object.values(country.name.nativeName)[0]).common 
     : country.name.common;
     
-  // Fix: Property 'name' does not exist on type 'unknown' by casting the result of Object.values
   const currencies = country.currencies 
-    ? (Object.values(country.currencies)).map(c => c.name).join(', ')
+    ? Object.entries(country.currencies)
+        .map(([code, details]) => `${details.name} (${code}) ${details.symbol || ''}`)
+        .join(', ')
     : 'N/A';
     
   const languages = country.languages 
@@ -90,7 +111,7 @@ const DetailPage = () => {
     : 'N/A';
 
   return (
-    <div className="space-y-16 lg:space-y-20">
+    <div className="space-y-12 lg:space-y-16">
       <button 
         onClick={() => navigate('/')}
         className="flex items-center gap-2 bg-white dark:bg-dark-blue custom-shadow px-8 py-2.5 rounded-md hover:opacity-80 transition-opacity text-sm font-semibold"
@@ -99,7 +120,7 @@ const DetailPage = () => {
         <span>Back</span>
       </button>
 
-      <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-32">
+      <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-32">
         {/* Flag Container */}
         <div className="w-full lg:w-1/2">
           <img 
@@ -111,7 +132,7 @@ const DetailPage = () => {
 
         {/* Info Container */}
         <div className="w-full lg:w-1/2 py-4">
-          <h1 className="text-2xl lg:text-3xl font-extrabold mb-8">{country.name.common}</h1>
+          <h1 className="text-2xl lg:text-4xl font-extrabold mb-8">{country.name.common}</h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mb-12">
             <div className="space-y-3 text-sm lg:text-base">
@@ -149,6 +170,28 @@ const DetailPage = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* History Section */}
+      <div className="space-y-6">
+        <h2 className="text-xl lg:text-2xl font-extrabold">Brief History</h2>
+        {historyLoading ? (
+          <div className="animate-pulse flex space-y-4 flex-col">
+            <div className="h-4 bg-dark-gray/20 rounded w-full"></div>
+            <div className="h-4 bg-dark-gray/20 rounded w-5/6"></div>
+            <div className="h-4 bg-dark-gray/20 rounded w-4/6"></div>
+          </div>
+        ) : (
+          <p className="text-sm lg:text-base leading-relaxed opacity-80 max-w-4xl">
+            {history || "No history data available for this country."}
+          </p>
+        )}
+      </div>
+
+      {/* Map Section */}
+      <div className="space-y-6">
+        <h2 className="text-xl lg:text-2xl font-extrabold">Location & Neighbors</h2>
+        <CountryMap mainCountry={country} neighbors={borderCountries} />
       </div>
     </div>
   );

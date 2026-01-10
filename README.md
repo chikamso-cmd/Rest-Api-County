@@ -14,49 +14,44 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 
 ## ✨ Features
 
-- **Browse Countries**: See all countries from the API on the homepage.
-- **Search**: Look for a specific country using the search bar.
-- **Filter by Region**: Filter the displayed countries by their region (Africa, Americas, Asia, Europe, Oceania).
-- **Detailed View**: Click on a country to see more details on a separate page.
-- **Border Countries**: On the detail page, click on border countries to navigate to their respective detail pages.
-- **Color Theme Switcher**: Toggle between light and dark mode for a comfortable viewing experience. The chosen theme is saved in your browser.
-- **Responsive Design**: The application is fully responsive and works on various screen sizes, from mobile to desktop.
+- **Browse Countries**: See all countries from the API on the homepage with **Infinite Scrolling**.
+- **Search & Filter**: Look for specific countries and filter by region.
+- **Group by Region**: Toggle a categorized view to see countries organized by their respective regions.
+- **Favorites System**: Add countries to your favorites list. Favorites are persisted in `localStorage`.
+- **Interactive Map**: View the location of each country and its neighbors on an interactive map (using Leaflet).
+- **Detailed History**: Read a brief history of each country fetched dynamically from the Wikipedia API.
+- **Enhanced Details**: View comprehensive data including multiple currencies (with symbols), languages, and more.
+- **Color Theme Switcher**: Toggle between light and dark mode.
+- **Responsive Design**: Fully optimized for mobile, tablet, and desktop views.
 
 ## 🛠️ Technologies Used
 
-- **React**: A JavaScript library for building user interfaces.
-- **React Router**: For handling client-side routing between the home and detail pages.
-- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
-- **Vite**: A fast build tool and development server for modern web projects.
-- **Lucide React**: A beautiful and consistent icon library.
-- **REST Countries API**: To fetch country data.
-- **ESLint**: For identifying and reporting on patterns found in ECMAScript/JavaScript code.
+- **React 19**: Modern UI development with hooks.
+- **React Router 7**: Robust client-side routing.
+- **Tailwind CSS 4**: Utility-first styling for a premium look.
+- **Leaflet & React Leaflet**: Interactive mapping capabilities.
+- **Wikipedia API**: Dynamic fetching of country historical data.
+- **Lucide React**: Clean and consistent iconography.
+- **Vite**: Ultra-fast build tool.
 
 ## 📂 Project Structure
 
 ```
 rest-county-api/
-├── public/
-│   └── vite.svg
 ├── src/
-│   ├── assets/
-│   │   └── react.svg
 │   ├── components/
 │   │   ├── CountyCard.jsx
-│   │   └── Main.jsx
+│   │   └── CountryMap.jsx
+│   ├── context/
+│   │   └── FavoritesContext.jsx
 │   ├── pages/
 │   │   ├── DetailsPage.jsx
 │   │   └── HomePage.jsx
-│   ├── App.css
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
-├── .gitignore
-├── eslint.config.js
-├── index.html
 ├── package.json
-├── README.md
-└── vite.config.js
+└── README.md
 ```
 
 ## 🚀 Getting Started
